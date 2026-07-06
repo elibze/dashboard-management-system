@@ -22,6 +22,7 @@ export default function Users() {
     const [error, setError] = useState("");
 
     const [search, setSearch] = useState("");
+    const [sortBy, setSortBy] = useState("");
     const [page, setPage] = useState(1);
 
     useEffect(() => {
@@ -48,10 +49,22 @@ export default function Users() {
 
     const users_per_page = 10;
     const totalPages = Math.ceil(filtered.length / users_per_page);
-    const currentUsers = filtered.slice(
+
+    const sortedUsers = [...filtered].sort((a,b) => {
+        if (sortBy === "name") {
+            return a.name.localeCompare(b.name);
+        }
+        if (sortBy === "username") {
+            return a.username.localeCompare(b.username);
+        }
+
+        return 0;
+    });
+
+        const currentUsers = sortedUsers.slice(
         (page-1)*users_per_page,
         page*users_per_page
-    );
+        );
 
     return (
         <DashboardLayout>
@@ -59,13 +72,28 @@ export default function Users() {
 
             <input
                 className="form-control mb-3"
-                placeholder="Search by mame or email..."
+                placeholder="Search by name or email..."
                 value={search}
                 onChange={(e) => {
                 setSearch(e.target.value);
                 setPage(1);
                 }}
             />
+            
+            <div className= "mb-3">
+                <button
+                    className="btn btn-outline-secondary me-2"
+                    onClick={() => setSortBy("name")}
+                >Sort by Name</button>
+                <button
+                    className="btn btn-outline-secondary"
+                    onClick={()=> setSortBy("username")}
+                >Sort by Username</button>
+                <button
+                    className="btn btn-outline-danger ms-2"
+                    onClick={()=> setSortBy("")}
+                >Reset</button>
+            </div>
 
             {loading && <p>Loading users...</p>}
             {error && <p className="alert alert-danger">{error}</p>}
