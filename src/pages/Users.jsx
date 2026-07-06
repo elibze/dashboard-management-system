@@ -1,3 +1,118 @@
+import { useEffect, useState } from "react";
+import DashboardLayout from "../components/Layout/DashboardLayout"; 
+import { fetchGraphQL } from "../graphql/client";
+
+const GET_USERS = `
+    query GetUsers {
+        users {
+            data {
+                id
+                name
+                username
+                email
+                website
+            }
+        }
+    }
+`;
+
 export default function Users() {
-    return <h1>Users</h1>;
+    const [users, setUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    const [search, setSearch] = useState("");
+    const [page, setPage] = useState(1);
+
+    useEffect(() => {
+        async function loadUsers () {
+            try {
+                setLoading(true);
+                const data = await fetchGraphQL(GET_USERS);
+                setUsers(data.users.data);
+                setError("");
+            } catch (err) {
+                setError(err.message || "Failed to load users.");
+            } finally {
+                setLoading(false);
+            }
+        }
+        loadUsers();
+    }, []);
+
+    const filtered = users.filter(
+        (u) =>
+            u.name.toLowerCase().includes(search.toLowerCase()) ||
+            u.email.toLowerCase().includes(search.toLowerCase())
+    );
+
+    const users_per_page = 10;
+    const totalPages = Math.ceil(filtered.length / users_per_page);
+    const currentUsers = filtered.slice(
+        (page-1)*users_per_page,
+        page*users_per_page
+    );
+
+    return (
+        <DashboardLayout>
+            <h2 className="mb-4">Users</h2>
+
+            <input
+                className="form-control mb-3"
+                placeholder="Search by mame or email..."
+                value={search}
+                onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+                }}
+            />
+
+            {loading && <p>Loading users...</p>}
+            {error && <p className="alert alert-danger">{error}</p>}
+            
+            {!loading && !error && (
+                <table className="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>Website</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {currentUsers.map((user) => (
+                            <tr key={user.id}>
+                                <td>{user.id}</td>
+                                <td>{user.name}</td>
+                                <td>{user.username}</td>
+                                <td>{user.email}</td>
+                                <td>{user.website}</td>
+                            </tr>
+                        ))}
+                    </tbody> 
+                </table>
+            )}
+
+            <div className="d-flex justify-content-between align-items-center mt-3">
+                <button
+                    className="btn btn-outline-primary"
+                    disabled={page === 1}
+                    onClick={() => setPage((p) => p - 1)}
+                >Previous</button>
+
+                <span>
+                    Page {page} of {totalPages || 1}
+                </span>
+
+                <button
+                    className="btn btn-outline-primary"
+                    disabled={page === totalPages}
+                    onClick={() => setPage((p)=> p + 1)}
+                >Next</button>
+            </div>
+        </DashboardLayout>
+    );
 }
