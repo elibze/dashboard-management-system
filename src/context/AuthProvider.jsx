@@ -6,9 +6,16 @@ export default function AuthProvider({ children }) {
         !!localStorage.getItem("token")
     );
 
-    const login = () => {
-        localStorage.setItem("token", "loggedIn");
-        setIsAuthenticated(true);
+    const login = (email, password) => {
+        if (email === "admin@test.com" && password === "admin123") {
+            localStorage.setItem("token", "loggedIn");
+            setIsAuthenticated(true);
+            return { success: true };
+        }
+        return {
+            success: false,
+            message: "Invalid email or password",
+        };
     };
 
     const logout = () => {
