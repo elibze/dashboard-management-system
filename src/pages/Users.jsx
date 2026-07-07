@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import DashboardLayout from "../components/Layout/DashboardLayout"; 
+import { useNavigate } from "react-router-dom"
+import DashboardLayout from "../components/Layout/DashboardLayout";
+import Loader from "../components/Loader/Loader";
 import { fetchGraphQL } from "../graphql/client";
 
 const GET_USERS = `
@@ -17,6 +19,7 @@ const GET_USERS = `
 `;
 
 export default function Users() {
+    const navigate = useNavigate();
     const [users, setUsers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -95,33 +98,41 @@ export default function Users() {
                 >Reset</button>
             </div>
 
-            {loading && <p>Loading users...</p>}
-            {error && <p className="alert alert-danger">{error}</p>}
+            {loading && <Loader />}
+            <div className="alert alert-danger mt-3">
+                <strong>Error:</strong>{error}
+            </div>
             
             {!loading && !error && (
-                <table className="table table-striped table-hover">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Username</th>
-                            <th>Email</th>
-                            <th>Website</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        {currentUsers.map((user) => (
-                            <tr key={user.id}>
-                                <td>{user.id}</td>
-                                <td>{user.name}</td>
-                                <td>{user.username}</td>
-                                <td>{user.email}</td>
-                                <td>{user.website}</td>
+                    <div className="table-responsive">
+                    <table className="table table-hover table-striped align-middle">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Website</th>
                             </tr>
-                        ))}
-                    </tbody> 
-                </table>
+                        </thead>
+
+                        <tbody>
+                            {currentUsers.map((user) => (
+                                <tr
+                                    key={user.id}
+                                    style={{cursor: "pointer"}}
+                                    onClick={()=> navigate(`/users/${user.id}`)}
+                                >
+                                        <td>{user.id}</td>
+                                        <td>{user.name}</td>
+                                        <td>{user.username}</td>
+                                        <td>{user.email}</td>
+                                        <td>{user.website}</td>
+                                </tr>
+                            ))}
+                        </tbody> 
+                    </table>
+                </div>
             )}
 
             <div className="d-flex justify-content-between align-items-center mt-3">

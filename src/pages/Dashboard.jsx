@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "../components/Layout/DashboardLayout";
+import Loader from "../components/Loader/Loader";
 import { fetchGraphQL } from "../graphql/client";
 import { GET_DASHBOARD_STATS } from "../graphql/queries/dashboard";
 
@@ -54,8 +55,9 @@ export default function Dashboard() {
     return (
         <DashboardLayout>
             <h2 className="mb-4">Dashboard</h2>
-            {loading && <p> Loading dashboard... </p>}
-            {error && <p className="text-danger">{error}</p>}
+            {loading && <Loader />}
+            {error && <div className="alert alert-danger mt-3">
+                        <strong>Error:</strong>{error} </div>}
 
             {!loading && !error && (
                 <div className="row">
