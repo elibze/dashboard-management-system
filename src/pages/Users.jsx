@@ -99,9 +99,9 @@ export default function Users() {
             </div>
 
             {loading && <Loader />}
-            <div className="alert alert-danger mt-3">
+            {error && <div className="alert alert-danger mt-3">
                 <strong>Error:</strong>{error}
-            </div>
+            </div>}
             
             {!loading && !error && (
                     <div className="table-responsive">
