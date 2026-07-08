@@ -1,21 +1,10 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "../components/Layout/DashboardLayout";
 import Loader from "../components/Loader/Loader";
+import StatCard from "../components/Cards/StatCard";
 import { fetchGraphQL } from "../graphql/client";
 import { GET_DASHBOARD_STATS } from "../graphql/queries/dashboard";
-
-function Card({ title, value }) {
-    return (
-        <div className="col-md-3 mb-3">
-            <div className="card shadow-sm">
-                <div className="card-body text-center">
-                    <h6>{title}</h6>
-                    <h2>{value}</h2>
-                </div>
-            </div>
-        </div>
-    );
-}
+import { FaUsers, FaFileAlt, FaComments, FaImages } from "react-icons/fa";
 
 export default function Dashboard() {
     const [stats, setStats] = useState({
@@ -29,7 +18,7 @@ export default function Dashboard() {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        async function loadStats() {
+        async function loadDashboard() {
             try {
                 setLoading(true);
 
@@ -44,27 +33,52 @@ export default function Dashboard() {
 
                 setError("");
             } catch (err) {
-                setError(err.message);
+                setError(err.message || "Failed to load dashboard.");
             } finally {
                 setLoading(false);
             }
         }
-        loadStats();
+        loadDashboard();
     }, []);
 
     return (
         <DashboardLayout>
-            <h2 className="mb-4">Dashboard</h2>
-            {loading && <Loader />}
-            {error && <div className="alert alert-danger mt-3">
-                        <strong>Error:</strong>{error} </div>}
+            <div className="mb-4">
+                <h2 className="fw-bold"> Welcome back, Admin! </h2>
+                <p className="text-muted">
+                    Here's a quick overview.
+                </p>
+            </div>
+
+            { loading && <Loader />}
+            { error && (
+                <div className="alert alert-danger">
+                    <strong>Erorr:</strong> {error}
+                </div>
+            )}
 
             {!loading && !error && (
                 <div className="row">
-                    <Card title="Users" value={stats.users} />
-                    <Card title="Posts" value={stats.posts} />
-                    <Card title="Comments" value={stats.comments} />
-                    <Card title="Albums" value={stats.albums} />
+                    <StatCard
+                        title="Users"
+                        value={stats.users}
+                        icon={<FaUsers/>}
+                    />
+                    <StatCard
+                        title="Posts"
+                        value={stats.posts}
+                        icon={<FaFileAlt/>}
+                    />             
+                    <StatCard
+                        title="Comments"
+                        value={stats.comments}
+                        icon={<FaComments/>}
+                    />
+                    <StatCard
+                        title="Albums"
+                        value={stats.albums}
+                        icon={<FaImages/>}
+                    />       
                 </div>
             )}
         </DashboardLayout>
