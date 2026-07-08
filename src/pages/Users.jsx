@@ -1,22 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import DashboardLayout from "../components/Layout/DashboardLayout";
 import TableSkeleton from "../components/Loader/TableSkeleton";
 import UserTable from "../components/Table/UserTable";
 import { fetchGraphQL } from "../graphql/client";
-
-const GET_USERS = `
-query GetUsers {
-    users {
-        data {
-            id
-            name
-            username
-            email
-            website
-        }
-    }
-}
-`;
+import { GET_USERS } from "../graphql/queries/users";
 
 export default function Users() {
     const [users, setUsers] = useState([]);
@@ -47,22 +34,24 @@ export default function Users() {
         loadUsers();
     }, []);
 
-    const filteredUsers = users.filter((user)=> {
+    const handleSearch = useCallback((e)=> {
+        setSearch(e.target.value);
+        setPage(1);
+    }, []);
+
+    const filteredUsers = useMemo(()=> {
         const searchValue = search.toLowerCase();
+        
+        return users.filter((user) => {
+            return (
+                user.name.toLowerCase().includes(searchValue) ||
+                user.email.toLowerCase().includes(searchValue)
+            );
+        });
+    }, [users, search]);
 
-        return (
-            user.name
-                .toLowerCase()
-                .includes(searchValue)
-            ||
-            user.email
-                .toLowerCase()
-                .includes(searchValue)
-        );
-    });
-
-    const sortedUsers = [...filteredUsers].sort(
-        (a,b) => {
+    const sortedUsers = useMemo(() => {
+        return [...filteredUsers].sort((a,b) => {
             if (sortBy === "name") {
                 return a.name.localeCompare(b.name);
             }
@@ -70,8 +59,8 @@ export default function Users() {
                 return a.username.localeCompare(b.username);
             }
             return 0;
-        }
-    );
+        });
+    }, [filteredUsers, sortBy]);
 
     const totalPages = Math.ceil(
         sortedUsers.length / usersPerPage
@@ -81,8 +70,7 @@ export default function Users() {
         (page-1)*usersPerPage,
         page*usersPerPage
     );
-
-
+    
     return (
         <DashboardLayout>
             <div className="d-flex justify-content-between align-items-center mb-3">
@@ -96,10 +84,7 @@ export default function Users() {
                 className="form-control mb-3"
                 placeholder="Search by name or email..."
                 value={search}
-                onChange={(e)=> {
-                    setSearch(e.target.value);
-                    setPage(1);
-                }}
+                onChange={handleSearch}
             />
 
             <div className="mb-3">

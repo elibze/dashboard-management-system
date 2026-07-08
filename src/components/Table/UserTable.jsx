@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import { memo } from "react";
 
-export default function UserTable({ users }) {
+function UserTable({ users }) {
     const navigate = useNavigate();
     return (
         <div className="table-responsive">
@@ -34,3 +35,5 @@ export default function UserTable({ users }) {
         </div>
     );
 }
+
+export default memo(UserTable);
