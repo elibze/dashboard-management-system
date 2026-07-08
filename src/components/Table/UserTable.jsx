@@ -20,7 +20,7 @@ export default function UserTable({ users }) {
                         <tr
                             key={user.id}
                             style={{ cursor: "pointer" }}
-                            onClick={() => navigate(`/users/${users.id}`)}
+                            onClick={() => navigate(`/users/${user.id}`)}
                         >
                             <td>{user.id}</td>
                             <td>{user.name}</td>

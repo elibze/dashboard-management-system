@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import DashboardLayout from "../components/Layout/DashboardLayout";
-import Loader from "../components/Loader/Loader";
+import TableSkeleton from "../components/Loader/TableSkeleton";
 import UserTable from "../components/Table/UserTable";
 import { fetchGraphQL } from "../graphql/client";
 
@@ -117,7 +117,7 @@ export default function Users() {
                 >Reset</button>
             </div>
 
-            {loading && <Loader />}
+            {loading && <TableSkeleton />}
 
             {error && (
                 <div className="alert alert-danger">

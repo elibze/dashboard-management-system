@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
 import DashboardLayout from "../components/Layout/DashboardLayout";
-import Loader from "../components/Loader/Loader";
+import CardSkeleton from "../components/Loader/CardSkeleton";
 import StatCard from "../components/Cards/StatCard";
 import { fetchGraphQL } from "../graphql/client";
 import { GET_DASHBOARD_STATS } from "../graphql/queries/dashboard";
@@ -56,7 +56,14 @@ export default function Dashboard() {
                 </p>
             </div>
 
-            { loading && <Loader />}
+            { loading && (
+                <div className="row">
+                    <CardSkeleton/>
+                    <CardSkeleton/>
+                    <CardSkeleton/>
+                    <CardSkeleton/>
+                </div>
+            )}
             { error && (
                 <div className="alert alert-danger">
                     <strong>Erorr:</strong> {error}
