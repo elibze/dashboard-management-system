@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 import DashboardLayout from "../components/Layout/DashboardLayout";
 import Loader from "../components/Loader/Loader";
 import StatCard from "../components/Cards/StatCard";
@@ -13,6 +14,8 @@ export default function Dashboard() {
         comments: 0,
         albums: 0,
     });
+
+    const { user } = useAuth();
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -44,7 +47,10 @@ export default function Dashboard() {
     return (
         <DashboardLayout>
             <div className="mb-4">
-                <h2 className="fw-bold"> Welcome back, Admin! </h2>
+                <h2 className="fw-bold"> Welcome back, {user?.name || "User"}! </h2>
+                <p className="text-muted mb-0">
+                    Role: {user?.role}
+                </p>
                 <p className="text-muted">
                     Here's a quick overview.
                 </p>

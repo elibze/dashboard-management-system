@@ -9,14 +9,6 @@ query GetUser($id: ID!) {
         phone
         company {
             name
-            catchPhrase
-            bs
-        }
-        address {
-            street
-            suite
-            city
-            zipcode
         }
     }
 }

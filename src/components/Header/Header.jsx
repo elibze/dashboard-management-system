@@ -2,7 +2,7 @@ import { FaBell } from "react-icons/fa";
 import { useAuth } from "../../hooks/useAuth";
 
 export default function Header() {
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
     const today = new Date().toLocaleDateString("en-GB", {
         weekday: "long", 
         day: "numeric",
@@ -26,10 +26,13 @@ export default function Header() {
                             3
                         </span>
                     </div>
-                    <div className="text-end">
-                        <div className="fw-semibold">Admin</div>
-                            <small className="text-muted"> admin@test.com </small>
-                        </div>
+                        <small className="text-muted">
+                            {user?.name || "User"}
+                            {" "}
+                            |
+                            {" "}
+                            {user?.email}
+                        </small>
                         <button
                             className="btn btn-outline-danger"
                             onClick={logout}

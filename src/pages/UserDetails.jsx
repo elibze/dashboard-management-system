@@ -17,12 +17,14 @@ export default function UserDetails() {
             try {
                 setLoading(true);
 
-                const data = await fetchGraphQL(GET_USER, { id });
+                const data = await fetchGraphQL(GET_USER, { id: String(id) });
+
+                console.log("USER DETAILS RESPONSE:", data);
 
                 setUser(data.user);
                 setError("");
             } catch (err) {
-                setError(err.message);
+                setError(err.message || "Failed to load user.");
             } finally {
                 setLoading(false);
             }
@@ -30,13 +32,30 @@ export default function UserDetails() {
         loadUser();
     }, [id]);
 
-    if (loading) return <Loader />;
+    if (loading) { 
+        return (
+            <DashboardLayout>
+                <Loader />
+            </DashboardLayout>
+        );
+    } 
 
     if (error) {
         return (
             <DashboardLayout>
                 <div className="alert alert-danger">
-                    <strong>Error:</strong>{error}</div>
+                    <strong>Error:</strong>{error}
+                </div>
+            </DashboardLayout>
+        );
+    }
+
+    if (!user) {
+        return (
+            <DashboardLayout>
+                <div className="alert alert-warning">
+                    User not found.
+                </div>
             </DashboardLayout>
         );
     }
@@ -60,27 +79,13 @@ export default function UserDetails() {
                     <p><strong>ID:</strong> {user.id}</p>
                     <p><strong>Username:</strong>{user.username}</p>
                     <p><strong>Email:</strong>{user.email}</p>
-                    <p><strong>Phone:</strong>{user.phone}</p>
                     <p><strong>Website:</strong>{user.website}</p>
 
                     <hr />
 
                     <h5>Company</h5>
 
-                    <p><strong>Name:</strong>{user.company?.name}</p>
-                    <p><strong>Catchphrase:</strong>{user.company?.catchPhrase}</p>
-                    
-                    <hr />
-
-                    <h5>Address</h5>
-
-                    <p>
-                        {user.address?.street}, {user.address?.suite}
-                    </p>
-
-                    <p>
-                        {user.address?.city}, {user.address?.zipcode}
-                    </p>
+                    <p><strong>Name:</strong>{user.company?.name}</p>                    
                 </div>
             </div>
         </DashboardLayout>
