@@ -70,7 +70,7 @@ export default function Users() {
         (page-1)*usersPerPage,
         page*usersPerPage
     );
-    
+
     return (
         <DashboardLayout>
             <div className="d-flex justify-content-between align-items-center mb-3">
@@ -81,6 +81,7 @@ export default function Users() {
             </div>
 
             <input
+                aria-label="Search users"
                 className="form-control mb-3"
                 placeholder="Search by name or email..."
                 value={search}
@@ -89,14 +90,17 @@ export default function Users() {
 
             <div className="mb-3">
                 <button 
+                    aria-label="Sort users by name"
                     className="btn btn-outline-secondary me-2"
                     onClick={()=> setSortBy("name")}
                 >Sort by Name</button>
                 <button
+                    aria-label="Sort users by username"
                     className="btn btn-outline-secondary me-2"
                     onClick={()=> setSortBy("username")}
                 >Sort by Username</button>
                 <button
+                    aria-label="Clear sort"
                     className="btn btn-outline-danger"
                     onClick={()=> setSortBy("")}
                 >Reset</button>
