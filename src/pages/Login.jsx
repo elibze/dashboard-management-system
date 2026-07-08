@@ -38,7 +38,7 @@ export default function Login() {
 
     return (
         <div className="d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
-            <div className="card p-4 shadow" style={{ width: "400px" }}>
+            <div className="card p-4 shadow login-card">
                 <h3 className ="text-center">Login</h3>
 
                 {error && (
@@ -49,6 +49,7 @@ export default function Login() {
                     <div className="mb-3">
                         <label htmlFor="email"> Email </label>
                         <input
+                            id="email"
                             className="form-control"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -58,6 +59,7 @@ export default function Login() {
                     <div className="mb-3">
                         <label htmlFor="password"> Password </label>
                         <input
+                            id="password"
                             type="password"
                             className="form-control"
                             value={password}

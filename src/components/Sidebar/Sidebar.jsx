@@ -4,10 +4,14 @@ import {
     FaUsers,
     FaUserCircle,
     FaSignOutAlt,
+    FaTimes
 } from "react-icons/fa";
 import { useAuth } from "../../hooks/useAuth";
 
-export default function Sidebar() {
+export default function Sidebar({
+    sidebarOpen,
+    closeSidebar
+}) {
     const location = useLocation();
     const { logout } = useAuth();
     const active = (path) =>
@@ -16,35 +20,49 @@ export default function Sidebar() {
             : "nav-link text-white";
 
     return (
-        <div
-            className="bg-dark text-white p-3 d-flex flex-column"
-            style={{ width: "240px", minHeight: "100vh"
-            }}
+        <aside
+            className={`
+                sidebar
+                ${sidebarOpen ? "show" : ""}
+            `}
         > 
-            <h3 className="mb-4 text-center">
-                Admin
-            </h3>
+            <div className="d-flex justify-content-between align-items-center mb-4">
+                <h3 className="m-0">
+                    Admin
+                </h3>
+
+                <button
+                    className="btn btn-outline-light d-md-none"
+                    onClick={closeSidebar}
+                    aria-label="Close menu"
+                >
+                    <FaTimes/>
+                </button>
+            </div>
             
-            <ul className="nav flex-column gap-2">
-                <li className="nav-item">
-                    <Link
-                        className={active("/dashboard")}
-                        to="/dashboard"
-                    > <FaHome className="me-2"/> Dashboard </Link>
-                </li>
-                <li className="nav-item">
-                    <Link
-                        className={active("/users")}
-                        to="/users"
-                    > <FaUsers className="me-2"/> Users </Link>
-                </li>
-                <li>
-                    <Link
-                        className={active("/profile")}
-                        to="/profile"
-                    > <FaUserCircle className="me-2"/> Profile </Link>
-                </li>
-            </ul>
+                <ul className="nav flex-column gap-2">
+                    <li className="nav-item">
+                        <Link
+                            onClick={closeSidebar}
+                            className={active("/dashboard")}
+                            to="/dashboard"
+                        > <FaHome className="me-2"/> Dashboard </Link>
+                    </li>
+                    <li className="nav-item">
+                        <Link
+                            onClick={closeSidebar}
+                            className={active("/users")}
+                            to="/users"
+                        > <FaUsers className="me-2"/> Users </Link>
+                    </li>
+                    <li>
+                        <Link
+                            onClick={closeSidebar}
+                            className={active("/profile")}
+                            to="/profile"
+                        > <FaUserCircle className="me-2"/> Profile </Link>
+                    </li>
+                </ul>
 
             <div className="mt-auto">
                 <button
@@ -52,6 +70,6 @@ export default function Sidebar() {
                     onClick={logout}
                 > <FaSignOutAlt className="me-2"/> Logout </button>
             </div>
-        </div>
+        </aside>
     );
 }

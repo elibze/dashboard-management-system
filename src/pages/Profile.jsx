@@ -100,10 +100,10 @@ export default function Profile() {
                                 />
                             </div>
 
-                            <buttton
+                            <button
                                 className="btn btn-primary w-100"
                                 onClick={handleSave}
-                            >Save Profile</buttton>
+                            >Save Profile</button>
 
                         </div>
                     </div>

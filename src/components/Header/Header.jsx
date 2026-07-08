@@ -1,7 +1,9 @@
-import { FaBell } from "react-icons/fa";
+import { FaBell, FaBars } from "react-icons/fa";
 import { useAuth } from "../../hooks/useAuth";
 
-export default function Header() {
+export default function Header({
+    toggleSidebar
+}) {
     const { logout, user } = useAuth();
     const today = new Date().toLocaleDateString("en-GB", {
         weekday: "long", 
@@ -13,6 +15,14 @@ export default function Header() {
     return (
         <header className="bg-white border-bottom shadow-sm px-4 py-3">
             <div className="d-flex justify-content-between align-items-center">
+                <div className="d-flex align-items-center gap-3">
+                    <button
+                        className="btn btn-dark d-md-none"
+                        onClick={toggleSidebar}
+                        aria-label="Open menu"
+                    ><FaBars/></button>
+                </div>
+
                 <div>
                     <h4 className="mb-0 fw-bold">Admin Dashboard</h4>
                     <small className="text-muted">

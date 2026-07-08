@@ -9,7 +9,7 @@ export default function Register() {
         name: "",
         email: "",
         password: "",
-        confirmPassowrd: "",
+        confirmPassword: "",
     });
 
     const [error, setError] = useState("");
@@ -45,7 +45,7 @@ export default function Register() {
     return (
         <div className="d-flex justify-content-center align-items-center"
         style= {{ height: "100vh" }}>
-            <div className="card p-4 shadow" style={{ width: "420px" }}>
+            <div className="card p-4 shadow register-card">
                 <h3 className="text-center mb-3">Create Account</h3>
 
                 {error && (
