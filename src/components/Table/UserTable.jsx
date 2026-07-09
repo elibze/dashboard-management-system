@@ -33,12 +33,12 @@ function UserTable({ users }) {
 
                 <thead className="table-light">
                     <tr>
-                        <th> ID </th>
-                        <th> Name </th>
-                        <th> Username </th>
-                        <th> Email </th>
-                        <th> Company </th>
-                        <th> Website </th>
+                        <th className="text-nowrap"> ID </th>
+                        <th className="text-nowrap"> Name </th>
+                        <th className="text-nowrap"> Username </th>
+                        <th className="text-nowrap"> Email </th>
+                        <th className="text-nowrap"> Company </th>
+                        <th className="text-nowrap"> Website </th>
                     </tr>
                 </thead>
                 
@@ -55,12 +55,12 @@ function UserTable({ users }) {
                             }
                             aria-label={`View details for ${user.name}`}
                         >
-                            <td>{user.id}</td>
+                            <td className="text-nowrap">{user.id}</td>
                             <td>{user.name}</td>
                             <td>{user.username}</td>
-                            <td>{user.email}</td>
+                            <td className="text-nowrap">{user.email}</td>
                             <td>{user.company?.name || "N/A"}</td>
-                            <td>
+                            <td className="text-nowrap">
                                 <a
                                     href={`https://${user.website}`}
                                     target="_blank"

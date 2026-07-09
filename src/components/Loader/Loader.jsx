@@ -2,7 +2,7 @@ export default function Loader() {
     return (
         <div
             className="d-flex justify-content-center align-items-center"
-            style={{ minheight: "300px" }}
+            style={{ minHeight: "300px" }}
         >
             <div
                 className="spinner-border text-primary"

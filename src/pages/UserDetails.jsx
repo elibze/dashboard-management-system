@@ -19,8 +19,6 @@ export default function UserDetails() {
 
                 const data = await fetchGraphQL(GET_USER, { id: String(id) });
 
-                console.log("USER DETAILS RESPONSE:", data);
-
                 setUser(data.user);
                 setError("");
             } catch (err) {
