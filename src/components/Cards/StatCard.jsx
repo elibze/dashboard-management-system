@@ -3,7 +3,7 @@ export default function StatCard({ title, value, icon }) {
         <div className="col-12 col-sm-6 col-lg-3 mb-4">
             <div className="card shadow-sm h-100 border-0">
                 <div className="card-body text-center">
-                    <div className="display-6 text-primary mb-3">
+                    <div className="display-6 display-md-5 text-primary mb-3">
                         {icon}
                     </div>
 

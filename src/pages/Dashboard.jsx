@@ -47,7 +47,9 @@ export default function Dashboard() {
     return (
         <DashboardLayout>
             <div className="mb-4">
-                <h2 className="fw-bold"> Welcome back, {user?.name || "User"}! </h2>
+                <h2 className="fw-bold fs-3 fs-md-2">
+                    Welcome back, {user?.name || "User"}!
+                </h2>
                 <p className="text-muted mb-0">
                     Role: {user?.role}
                 </p>
@@ -66,7 +68,7 @@ export default function Dashboard() {
             )}
             { error && (
                 <div className="alert alert-danger">
-                    <strong>Erorr:</strong> {error}
+                    <strong>Error:</strong> {error}
                 </div>
             )}
 

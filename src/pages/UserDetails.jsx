@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 import DashboardLayout from "../components/Layout/DashboardLayout";
 import Loader from "../components/Loader/Loader";
 import { fetchGraphQL } from "../graphql/client";
@@ -8,6 +9,7 @@ import { GET_USER } from "../graphql/queries/userDetails";
 export default function UserDetails() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { user: loggedUser } = useAuth();
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -53,6 +55,16 @@ export default function UserDetails() {
             <DashboardLayout>
                 <div className="alert alert-warning">
                     User not found.
+                </div>
+            </DashboardLayout>
+        );
+    }
+
+    if (loggedUser?.role !== "Administrator") {
+        return (
+            <DashboardLayout>
+                <div className="alert alert-danger">
+                    You do not have permission to view this page.
                 </div>
             </DashboardLayout>
         );

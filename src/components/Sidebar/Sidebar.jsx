@@ -12,8 +12,10 @@ export default function Sidebar({
     sidebarOpen,
     closeSidebar
 }) {
+
     const location = useLocation();
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
+
     const active = (path) =>
         location.pathname === path
             ? "nav-link text-white bg-primary rounded"
@@ -28,7 +30,7 @@ export default function Sidebar({
         > 
             <div className="d-flex justify-content-between align-items-center mb-4">
                 <h3 className="m-0">
-                    Admin
+                    Dashboard
                 </h3>
 
                 <button
@@ -48,14 +50,18 @@ export default function Sidebar({
                             to="/dashboard"
                         > <FaHome className="me-2"/> Dashboard </Link>
                     </li>
-                    <li className="nav-item">
-                        <Link
-                            onClick={closeSidebar}
-                            className={active("/users")}
-                            to="/users"
-                        > <FaUsers className="me-2"/> Users </Link>
-                    </li>
-                    <li>
+
+                    {user?.role === "Administrator" && (
+                        <li className="nav-item">
+                            <Link
+                                onClick={closeSidebar}
+                                className={active("/users")}
+                                to="/users"
+                            > <FaUsers className="me-2"/> Users </Link>
+                        </li>
+                    )}
+
+                        <li>
                         <Link
                             onClick={closeSidebar}
                             className={active("/profile")}

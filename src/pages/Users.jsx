@@ -88,7 +88,7 @@ export default function Users() {
                 onChange={handleSearch}
             />
 
-            <div className="mb-3">
+            <div className="d-flex flex-wrap gap-2 mb-3">
                 <button 
                     aria-label="Sort users by name"
                     className="btn btn-outline-secondary me-2"

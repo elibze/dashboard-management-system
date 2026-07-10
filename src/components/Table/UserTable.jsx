@@ -22,7 +22,7 @@ function UserTable({ users }) {
             aria-label="Users table"
         >
             <table
-                className="table table-hover table-striped align-middle"
+                className="table table-hover table-striped text-nowrap align-middle"
                 aria-describedby="usersTableDescription"
             >
                 <caption
@@ -31,7 +31,7 @@ function UserTable({ users }) {
                 > List of users. You can search, sort and select a user
                 to view detailed information. </caption>
 
-                <thead className="table-light">
+                <thead className="table-dark">
                     <tr>
                         <th className="text-nowrap"> ID </th>
                         <th className="text-nowrap"> Name </th>

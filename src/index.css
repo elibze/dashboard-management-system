@@ -62,13 +62,23 @@ html, body, #root {
     background:#0d6efd !important;
 }
 
+.table-responsive {
+    border-radius: 12px;
+}
+
+.table td,
+.table th {
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
 @media(max-width:768px) {
     .sidebar {
         position: fixed;
         left: -260px;
         top: 0;
         height: 100vh;
-        width: 240px;
+        width: 250px;
         box-shadow: 5px 0 15px rgba(0,0,0,0.3);
     }
     .sidebar.show {
@@ -80,5 +90,39 @@ html, body, #root {
         inset: 0;
         background: rgba(0,0,0,.5);
         z-index: 1500;
+    }
+    .login-card,
+    .register-card {
+        width: 95%;
+    }
+    header h5{
+        font-size: 1rem;
+    }
+    header .btn{
+        padding:.4rem .7rem;
+    }
+    .container-fluid{
+        padding:1rem !important;
+    }
+    .card{
+        margin-bottom:1rem;
+    }
+    .table {
+        font-size:.9rem;
+    }
+}
+
+@media (max-width:576px){
+    .table{
+        font-size:.82rem;
+    }
+    .btn {
+        font-size:.85rem;
+    }
+    h2{
+        font-size:1.4rem;
+    }
+    h4{
+        font-size:1.1rem;
     }
 }

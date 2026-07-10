@@ -25,7 +25,7 @@ function App() {
             <Route 
                 path="/users"
                 element={
-                    <ProtectedRoute>
+                    <ProtectedRoute role="Administrator">
                         <Users />
                     </ProtectedRoute>
                 }
@@ -34,7 +34,7 @@ function App() {
             <Route
                 path="/users/:id"
                 element={
-                    <ProtectedRoute>
+                    <ProtectedRoute role="Administrator">
                         <UserDetails />
                     </ProtectedRoute>
                 }
