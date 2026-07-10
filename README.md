@@ -10,7 +10,7 @@ The project demonstrates:
 - Protected routes
 - GraphQL API integration
 - Data tables with search, sorting, and pagination
-- LocalStorage-based user management
+- localStorage-based user management
 - Responsive UI design
 - Loading states and error handling
 - Reusable React components
@@ -28,7 +28,7 @@ Implemented authentication system with localStorage.
 - User account creation
 - User login/logout
 - Protected routes
-- Sessions persistence after refresh
+- Session persistence after refresh
 - Form validation
 - Different user roles
 
@@ -76,7 +76,7 @@ Features:
 - Wind speed
 - Loading state
 - Error handling
-Weather is display using **Open-Meteo API**. No API key is required.
+Weather is displayed using **Open-Meteo API**. No API key is required.
 
 ---
 
@@ -115,16 +115,16 @@ Security features:
 
 ---
 
-### Dashboard Layout
+## Dashboard Layout
 The application uses a responsive dashboard layout.
 Includes:
-## Sidebar
+### Sidebar
 Navigation:
 - Dashboard
 - Users
 - Profile
 - Logout
-## Header
+### Header
 Displays:
 - Current user
 - Current date
@@ -176,6 +176,31 @@ Implemented:
 - Responsive layout
 
 ---
+
+## Architecture Explanation
+The project follows a component-based React architecture.
+
+Main structure:
+- `api/`
+- Weather API logic, fetching.
+  
+- `components/`
+- Reusable UI components such as Header, Sidebar, Tables, Cards, and Loaders.
+
+- `pages/`
+- Application views such as Login, Dashboard, Users, User Details, and Profile.
+
+- `context/`
+- Global authentication state management using React Context.
+
+- `hooks/`
+- Custom reusable hooks such as authentication access.
+
+- `graphql/`
+- GraphQL queries and API communication logic.
+
+- `routes/`
+- Protected route handling.
 
 ## Technologies Used
 Frontend:
