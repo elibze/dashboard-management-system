@@ -72,6 +72,33 @@ html, body, #root {
     vertical-align: middle;
 }
 
+.weather-card {
+    border-radius: 16px;
+}
+
+.weather-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.weather-item {
+    display:grid;
+    grid-template-columns: 30px 1fr auto;
+    align-items:center;
+    padding: 12px;
+    background: #f8f9fa;
+    border-radius: 12px;
+}
+
+.weather-item svg {
+    color: #0d6efd;
+}
+
+.weather-item span {
+    color: #6c757d;
+}
+
 @media(max-width:768px) {
     .sidebar {
         position: fixed;
@@ -124,5 +151,15 @@ html, body, #root {
     }
     h4{
         font-size:1.1rem;
+    }
+    .weather-card .display-4 {
+        font-size:2.5rem;
+    }
+    .weather-item{
+        grid-template-columns:25px 1fr;
+    }
+    .weather-item strong {
+        grid-column:2;
+        font-size:0.9rem;
     }
 }

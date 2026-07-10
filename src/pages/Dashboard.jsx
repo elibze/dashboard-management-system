@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../hooks/useAuth";
+import WeatherCard from "../components/Weather/WeatherCard";
+import Loader from "../components/Loader/Loader";
+import { getWeather } from "../api/weather";
 import DashboardLayout from "../components/Layout/DashboardLayout";
 import CardSkeleton from "../components/Loader/CardSkeleton";
 import StatCard from "../components/Cards/StatCard";
@@ -19,6 +22,9 @@ export default function Dashboard() {
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
+    const [weather, setWeather] = useState(null);
+    const [weatherLoading, setWeatherLoading] = useState(true);
+    const [weatherError, setWeatherError] = useState("");
 
     useEffect(() => {
         async function loadDashboard() {
@@ -42,6 +48,22 @@ export default function Dashboard() {
             }
         }
         loadDashboard();
+    }, []);
+
+    useEffect(() => {
+        async function loadWeather() {
+            try {
+                setWeatherLoading(true);
+                const data = await getWeather();
+                setWeather(data);
+            } catch (weatherError) {
+                setWeatherError(weatherError.message || "Weather currently unavailable.");
+            }
+            finally {
+                setWeatherLoading(false);
+            }
+        }
+        loadWeather();
     }, []);
 
     return (
@@ -96,6 +118,21 @@ export default function Dashboard() {
                     />       
                 </div>
             )}
+
+            { 
+                weatherLoading
+                ?                    
+                <Loader/>
+                :
+                <WeatherCard weather={weather}/>
+            }
+
+            { weatherError && (
+                <div className="alert alert-danger">
+                {weatherError}
+                </div>
+            )}
+            
         </DashboardLayout>
     );
 }
