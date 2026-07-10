@@ -2,8 +2,9 @@ import { useState } from "react";
 import AuthContext from "./AuthContext";
 
 export default function AuthProvider({ children }) {
+
     const [user, setUser] = useState(()=> {
-        const savedUser = localStorage.getItem("profile");
+        const savedUser = localStorage.getItem("currentUser");
 
         return savedUser
             ? JSON.parse(savedUser)
@@ -54,9 +55,11 @@ export default function AuthProvider({ children }) {
     }
 
     function login(email, password) {
+        const adminPassword = localStorage.getItem("adminPassword") || "admin123";
+
         if (
             email === "admin@test.com" &&
-            password === "admin123"
+            password === adminPassword
         ) {
             const admin = {
                 id: 0,
@@ -95,10 +98,12 @@ export default function AuthProvider({ children }) {
         }
 
         const loggedUser = {
-            ...found
+            id:found.id,
+            name:found.name,
+            email:found.email,
+            company:found.company,
+            role:found.role
         };
-
-        delete loggedUser.password;
 
         localStorage.setItem("token", "loggedIn");
         localStorage.setItem(
@@ -123,34 +128,61 @@ export default function AuthProvider({ children }) {
     }
 
     function updateUser(updatedUser) {
+
+        const cleanUser = {
+            id: updatedUser.id,
+            name: updatedUser.name,
+            email: updatedUser.email,
+            company: updatedUser.company,
+            role: updatedUser.role
+        };
+
         const users = getUsers();
 
         const updatedUsers = users.map((u) =>
-            u.id === updatedUser.id
+            u.id === cleanUser.id
                 ? {
                     ...u,
-                    ...updatedUser,
-                    password: u.password
+                    ...cleanUser,
                 }
             : u
         );
 
         saveUsers(updatedUsers);
+
         localStorage.setItem(
             "currentUser",
-            JSON.stringify(updatedUser)
+            JSON.stringify(cleanUser)
         );
 
-        setUser(updatedUser);
+        setUser(cleanUser);
     }
 
     function changePassword(currentPassword, newPassword) {
-        const users = JSON.parse(
-            localStorage.getItem("users")
-        ) || [];
+        if(user.email === "admin@test.com") {
+            const oldPassword = localStorage.getItem("adminPassword") || "admin123";
+
+            if(currentPassword !== oldPassword) {
+                return {
+                    success:false,
+                    message: "Current password incorrect."
+                };
+            }
+
+            localStorage.setItem(
+                "adminPassword",
+                newPassword
+            );
+
+            return {
+                success:true
+            };
+        }
+
+        const users = getUsers();
 
         const index = users.findIndex(
-            item => item.email === user.email
+            u => u.email.toLowerCase() === user.email.toLowerCase()
         );
 
         if (index === -1) {
@@ -169,10 +201,7 @@ export default function AuthProvider({ children }) {
 
         users[index].password = newPassword;
 
-        localStorage.setItem(
-            "users",
-            JSON.stringify(users)
-        );
+        saveUsers(users);
 
         return {
             success:true

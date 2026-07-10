@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useAuth } from "../hooks/useAuth";
 import DashboardLayout from "../components/Layout/DashboardLayout";
 
@@ -13,15 +13,14 @@ export default function Profile() {
     const [passwordEditing, setPasswordEditing] = useState(false);
     const [message, setMessage] = useState("");
     const [error, setError] = useState("");
-    const [profile, setProfile] = useState(
-        user || {
-            id: "",
-            name: "",
-            email: "",
-            company: "",
-            role: ""
-        }
-    );
+    const errorRef = useRef(null);
+    const [profile, setProfile] = useState({
+        id:"",
+        name:"",
+        email:"",
+        company:"",
+        role:"",
+    });
 
     const [passwords, setPasswords] = useState({
         current: "",
@@ -39,6 +38,28 @@ export default function Profile() {
         );
     }
 
+    function showError(message) {
+        setError(message);
+        
+        setTimeout(() => {
+            errorRef.current?.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }, 100);
+    }
+
+    function startEditing() {
+        setProfile({
+            id:user.id,
+            name:user.name,
+            email:user.email,
+            company:user.company,
+            role:user.role
+        });
+        setEditing(true);
+    }
+
     function handleChange(e) {
         setProfile({
             ...profile,
@@ -53,7 +74,7 @@ export default function Profile() {
         });
     }
 
-    function handleSaveProfile() {
+    function saveProfile() {
         updateUser(profile);
 
         setEditing(false);
@@ -65,29 +86,30 @@ export default function Profile() {
         }, 3000);
     }
 
-    function handleSavePassword() {
-        setError("");
+    function savePassword() {
+        showError("");
+        setMessage("");
         
         if(
-            !passwords.current ||
-            !passwords.newPassword ||
-            !passwords.confirm
+            passwords.current.trim() === "" ||
+            passwords.newPassword.trim() === "" ||
+            passwords.confirm.trim() === ""
         ) {
-            setError(
+            showError(
                 "All password fields are required."
             );
             return;
         }
 
         if(passwords.newPassword.length < 6) {
-            setError(
+            showError(
                 "Password must be at least 6 characters."
             );
             return;
         }
 
         if(passwords.newPassword !== passwords.confirm) {
-            setError("Passwords do not match.");
+            showError("Passwords do not match.");
             return;
         }
 
@@ -97,7 +119,7 @@ export default function Profile() {
         );
 
         if(!result.success){
-            setError( result.message );
+            showError( result.message );
             return;
         }
 
@@ -120,7 +142,7 @@ export default function Profile() {
         <DashboardLayout>
             <div className="row justify-content-center">
                 <div className="col-lg-7">
-                    <div className="card shadow-sm border-0">
+                    <div className="card shadow-sm">
                         <div className="card-body">
                             <h2 className="text-center mb-4">
                                 My Profile
@@ -133,7 +155,9 @@ export default function Profile() {
                             )}
 
                             {error && (
-                                <div className="alert alert-danger">
+                                <div
+                                    ref={errorRef}
+                                    className="alert alert-danger">
                                     {error}
                                 </div>
                             )}
@@ -171,7 +195,7 @@ export default function Profile() {
 
                                     <button
                                         className="btn btn-primary w-100 mt-3"
-                                        onClick={() => setEditing(true) }
+                                        onClick={startEditing}
                                     > Edit Profile </button>
                                 </>
                             ) : (
@@ -235,14 +259,22 @@ export default function Profile() {
                                     <div className="d-flex gap-2">
                                         <button
                                             className="btn btn-success flex-fill"
-                                            onClick={handleSaveProfile}
+                                            onClick={saveProfile}
                                         > Save </button>
 
                                         <button
                                             className="btn btn-secondary flex-fill"
                                             onClick={() => {
                                                 setEditing(false);
-                                                setProfile(user);
+                                                setProfile({
+                                                    id:user.id,
+                                                    name:user.name,
+                                                    email:user.email,
+                                                    company:user.company,
+                                                    role:user.role
+                                                });
+                                                setError("");
+                                                setMessage("");
                                             }}
                                         > Cancel </button>
                                     </div>
@@ -307,7 +339,7 @@ export default function Profile() {
                                         <div className="d-flex gap-2">
                                             <button
                                                 className="btn btn-success flex-fill"
-                                                onClick={handleSavePassword}
+                                                onClick={savePassword}
                                             > Save Password </button>
 
                                             <button
@@ -319,6 +351,8 @@ export default function Profile() {
                                                         newPassword:"",
                                                         confirm:""
                                                     });
+                                                    setError("");
+                                                    setMessage("");
                                                 }}
                                             > Cancel </button>
                                         </div>
